@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single"/>
+
+    <item
+        android:id="@+id/nutella"
+        android:title="Nutella Pie"/>
+
+    <item
+        android:id="@+id/brownies"
+        android:title="Brownies"/>
+
+    <item
+        android:id="@+id/yellow_cake"
+        android:title="Yellow Cake"/>
+
+    <item
+        android:id="@+id/cheese_cake"
+        android:title="Cheese Cake"/>
+
+</menu>
