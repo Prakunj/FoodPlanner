@@ -61,7 +61,6 @@ public class DetailFragment extends Fragment implements StepsAdapter.clickOnList
             index = getArguments().getInt("index", -1);
             Log.e(LOG_TAG, String.valueOf(index));
 
-
         }
 
         context = getActivity();
