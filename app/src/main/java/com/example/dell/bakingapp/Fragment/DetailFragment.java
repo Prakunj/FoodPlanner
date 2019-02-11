@@ -47,7 +47,6 @@ public class DetailFragment extends Fragment implements StepsAdapter.clickOnList
 
 
     public DetailFragment() {
-        // Required empty public constructor
     }
 
 
