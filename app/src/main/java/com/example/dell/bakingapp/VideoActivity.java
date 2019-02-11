@@ -53,19 +53,14 @@ public class VideoActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         stepsArrayList = intent.getParcelableArrayListExtra("arrayList");
-        Log.e(LOG_TAG, String.valueOf(stepsArrayList));
         index = intent.getIntExtra("index", -1);
-        Log.e(LOG_TAG, String.valueOf(index));
 
         description = stepsArrayList.get(index).getDescription();
 
         binding.descView.setText(description);
-        Log.e(LOG_TAG, "video");
-        Log.e(LOG_TAG, description);
-        videoUrl = (stepsArrayList.get(index).getVideoUrl() == null)?"null":stepsArrayList.get(index).getVideoUrl();
-        Log.e(LOG_TAG, videoUrl);
+        videoUrl = (stepsArrayList.get(index).getVideoUrl() == null) ? "null" : stepsArrayList.get(index).getVideoUrl();
 
-        if(index == stepsArrayList.size() -1){
+        if (index == stepsArrayList.size() - 1) {
             binding.next.setVisibility(View.INVISIBLE);
         }
         if (index == 0) {
@@ -73,12 +68,18 @@ public class VideoActivity extends AppCompatActivity {
 
         }
 
-        initializePlayer(Uri.parse(videoUrl));
+        if (videoUrl.isEmpty()) {
+            binding.playerView.setVisibility(View.GONE);
+        } else {
+            binding.playerView.setVisibility(View.VISIBLE);
+            initializePlayer(Uri.parse(videoUrl));
+        }
     }
 
     private void initializePlayer(Uri videoUrl) {
 
-        if(simpleExoPlayer == null){
+
+        if (simpleExoPlayer == null) {
             Log.e(LOG_TAG, "player");
             TrackSelector trackSelector = new DefaultTrackSelector();
             LoadControl loadControl = new DefaultLoadControl();
@@ -91,6 +92,7 @@ public class VideoActivity extends AppCompatActivity {
             simpleExoPlayer.prepare(mediaSource);
             simpleExoPlayer.setPlayWhenReady(true);
         }
+
     }
 
     @Override
@@ -99,57 +101,64 @@ public class VideoActivity extends AppCompatActivity {
         releasePlayer();
     }
 
-    public void next(View view){
+    public void next(View view) {
 
-        Log.e(LOG_TAG, "onClicked");
         releasePlayer();
-        if(index < stepsArrayList.size()-1 ) {
+        if (index < stepsArrayList.size() - 1) {
             binding.next.setVisibility(View.VISIBLE);
             binding.previous.setVisibility(View.VISIBLE);
 
             int index2 = ++index;
-            Log.e(LOG_TAG, String.valueOf(index2));
-
 
             videoUrl = (stepsArrayList.get(index2).getVideoUrl() == null) ? "null" : stepsArrayList.get(index2).getVideoUrl();
             description = stepsArrayList.get(index2).getDescription();
             binding.descView.setText(description);
 
-            initializePlayer(Uri.parse(videoUrl));
-            if(index == stepsArrayList.size() -1){
-                binding.next.setVisibility(View.INVISIBLE);
-
-
+            if (!videoUrl.isEmpty()) {
+                binding.playerView.setVisibility(View.VISIBLE);
+                initializePlayer(Uri.parse(videoUrl));
+            }else{
+                binding.playerView.setVisibility(View.GONE);
             }
+        }
+        if (index == stepsArrayList.size() - 1) {
+            binding.next.setVisibility(View.INVISIBLE);
+
+
         }
     }
 
-    public void previous(View view){
+
+    public void previous(View view) {
 
         releasePlayer();
-        if(index > 0) {
+        if (index > 0) {
             binding.previous.setVisibility(View.VISIBLE);
             binding.next.setVisibility(View.VISIBLE);
             int index2 = --index;
-            Log.e(LOG_TAG, String.valueOf(index2));
 
             videoUrl = (stepsArrayList.get(index2).getVideoUrl() == null) ? "null" : stepsArrayList.get(index2).getVideoUrl();
             description = stepsArrayList.get(index2).getDescription();
             binding.descView.setText(description);
 
-            initializePlayer(Uri.parse(videoUrl));
+            if(!videoUrl.isEmpty()){
+                binding.playerView.setVisibility(View.VISIBLE);
+                initializePlayer(Uri.parse(videoUrl));
+            }else {
+                binding.playerView.setVisibility(View.GONE);
+            }
+
             {
                 if (index == 0) {
                     binding.previous.setVisibility(View.INVISIBLE);
-
                 }
             }
         }
 
     }
 
-    private void releasePlayer(){
-        if(simpleExoPlayer != null) {
+    private void releasePlayer() {
+        if (simpleExoPlayer != null) {
             simpleExoPlayer.stop();
             simpleExoPlayer.release();
             simpleExoPlayer = null;

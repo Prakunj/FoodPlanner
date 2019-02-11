@@ -11,6 +11,7 @@ import android.widget.RemoteViewsService;
 import com.example.dell.bakingapp.Adapter.AppWidgetAdapter;
 import com.example.dell.bakingapp.MainActivity;
 import com.example.dell.bakingapp.Model.Fields;
+import com.example.dell.bakingapp.Model.Ingredients;
 import com.example.dell.bakingapp.Preferences;
 
 import java.util.ArrayList;
@@ -24,16 +25,14 @@ public class AppWidgetService extends RemoteViewsService {
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
         Log.e(LOG_TAG, "onGetFactory");
 
-        intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-        intent.getParcelableArrayListExtra("arrayList");
 
-        return new AppWidgetAdapter(context);
+        return new AppWidgetAdapter(getApplicationContext());
     }
 
-    public static void updateWidget(Context context, ArrayList<Fields> fields) {
+    public static void updateWidget(Context context, ArrayList<Ingredients> fields) {
 
         Preferences.saveRecipe(context, fields);
-        Log.e(LOG_TAG, "updateWidget5");
+        Log.e(LOG_TAG, "saveRecipe");
 
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, AppWidget.class));

@@ -20,9 +20,8 @@ public class AppWidgetAdapter implements RemoteViewsService.RemoteViewsFactory {
     private static final String LOG_TAG = AppWidgetAdapter.class.getSimpleName();
 
 
-    Context context;
-    private ArrayList<Fields> fields;
-    private int appWidgetId;
+    private Context context;
+    private ArrayList<Ingredients> fields;
 
     public AppWidgetAdapter(Context context){
         Log.e(LOG_TAG, "appWidgetAdapter");
@@ -53,9 +52,11 @@ public class AppWidgetAdapter implements RemoteViewsService.RemoteViewsFactory {
     public RemoteViews getViewAt(int position) {
 
         Log.e(LOG_TAG, "getViewAt");
+        Log.e(LOG_TAG, String.valueOf(position));
 
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_list_item);
-        views.setTextViewText(R.id.textView, fields.get(position).getIngredients().get(position).getIngredient());
+        views.setTextViewText(R.id.textView, fields.get(position).getIngredient());
+
 
         return views;
     }

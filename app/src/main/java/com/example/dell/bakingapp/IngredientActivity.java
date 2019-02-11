@@ -18,6 +18,7 @@ import com.example.dell.bakingapp.Adapter.IngredientsAdapter;
 import com.example.dell.bakingapp.Model.Fields;
 import com.example.dell.bakingapp.Model.Ingredients;
 import com.example.dell.bakingapp.Widget.AppWidget;
+import com.example.dell.bakingapp.Widget.AppWidgetService;
 import com.example.dell.bakingapp.databinding.ActivityIngredientBinding;
 
 import java.util.ArrayList;
@@ -54,6 +55,8 @@ public class IngredientActivity extends AppCompatActivity {
         binding.recyclerView.setLayoutManager(layoutManager);
         binding.recyclerView.setAdapter(adapter);
 
+        updateWidget();
+
 
         }
 
@@ -64,6 +67,22 @@ public class IngredientActivity extends AppCompatActivity {
         Log.e(LOG_TAG, String.valueOf(ingredientsArrayList));
 
         return fieldsArrayList;
+    }
+
+    private void updateWidget() {
+        Intent intent1 = new Intent(this, AppWidget.class);
+        intent1.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+// Use an array and EXTRA_APPWIDGET_IDS instead of AppWidgetManager.EXTRA_APPWIDGET_ID,
+// since it seems the onUpdate() is only fired on that:
+        int[] ids = AppWidgetManager.getInstance(getApplication())
+                .getAppWidgetIds(new ComponentName(getApplication(), AppWidget.class));
+        intent1.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+        sendBroadcast(intent1);
+
+        AppWidgetService.updateWidget(context, ingredientsArrayList);
+
+        Log.e(LOG_TAG, "updateWidget");
+
     }
 
 

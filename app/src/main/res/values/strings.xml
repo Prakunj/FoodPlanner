@@ -4,4 +4,16 @@
     <string name="add_widget">Add widget</string>
     <string name="widget_recipe_key">widget_recipe_key</string>
 
+    <string name="item_element_text">Brownies</string>
+    <string name="item_element_text1">Nutella Pie</string>
+
+    <string name="item_element_text2">Yellow Cake</string>
+    <string name="item_element_text3">Cheesecake</string>
+
+    <string name="item_element_text4">Cheesecakerrr</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
 </resources>

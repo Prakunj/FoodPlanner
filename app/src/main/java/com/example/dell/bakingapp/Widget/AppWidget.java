@@ -33,21 +33,18 @@ public class AppWidget extends AppWidgetProvider {
 
 
 
-        ArrayList<Fields> fields = Preferences.loadRecipe(context);
+
+        ArrayList<Ingredients> fields = Preferences.loadRecipe(context);
         Log.e(LOG_TAG, String.valueOf(fields));
         if(fields != null) {
 
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.app_widget);
 
             Intent intent1 = new Intent(context, AppWidgetService.class);
-            intent1.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-            intent1.putParcelableArrayListExtra("arrayList", fields);
-            intent1.setData(Uri.parse(intent1.toUri(Intent.URI_INTENT_SCHEME)));
 
             views.setRemoteAdapter(R.id.tvList, intent1);
             views.setEmptyView(R.id.tvList, R.id.emptyView);
             Log.e(LOG_TAG, "updateAppWidget2");
-
 
 
             appWidgetManager.updateAppWidget(appWidgetId, views);

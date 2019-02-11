@@ -6,6 +6,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.example.dell.bakingapp.Model.Fields;
+import com.example.dell.bakingapp.Model.Ingredients;
 import com.fasterxml.jackson.databind.ser.std.ObjectArraySerializer;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -20,7 +21,7 @@ public class Preferences {
 
     public static final String PREFS_NAME = "prefs";
 
-    public static void saveRecipe(Context context, ArrayList<Fields> fields) {
+    public static void saveRecipe(Context context, ArrayList<Ingredients> fields) {
         Log.e(LOF_TAG, "Recipe");
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -33,7 +34,7 @@ public class Preferences {
 
     }
 
-    public static ArrayList<Fields> loadRecipe(Context context) {
+    public static ArrayList<Ingredients> loadRecipe(Context context) {
         Log.e(LOF_TAG, "loadRecipe");
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -41,8 +42,8 @@ public class Preferences {
         Gson gson = new Gson();
         String json = prefs.getString(PREFS_NAME, null);
 
-        Type type = new TypeToken<ArrayList<Fields>>(){}.getType();
-        ArrayList<Fields> fieldsArrayList = gson.fromJson(json, type);
+        Type type = new TypeToken<ArrayList<Ingredients>>(){}.getType();
+        ArrayList<Ingredients> fieldsArrayList = gson.fromJson(json, type);
         return fieldsArrayList;
 
     }

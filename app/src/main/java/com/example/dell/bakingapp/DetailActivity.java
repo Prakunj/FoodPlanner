@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.test.espresso.IdlingResource;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -23,6 +24,7 @@ import android.widget.TextView;
 import android.support.v7.widget.Toolbar;
 
 import com.example.dell.bakingapp.Adapter.StepsAdapter;
+import com.example.dell.bakingapp.IdlingResource.SimpleIdlingResource;
 import com.example.dell.bakingapp.Model.Fields;
 import com.example.dell.bakingapp.Model.Ingredients;
 import com.example.dell.bakingapp.Model.Steps;
@@ -44,8 +46,14 @@ public class DetailActivity extends AppCompatActivity implements StepsAdapter.cl
     private int id;
     private ActivityDetailBinding binding;
     private ArrayList<Ingredients> ingredientsArrayList;
+    private SimpleIdlingResource idlingResource;
+    private ActionBar actionBar;
 
     private static final String LOG_TAG = DetailActivity.class.getSimpleName();
+    public static final String test = "test";
+
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -64,12 +72,14 @@ public class DetailActivity extends AppCompatActivity implements StepsAdapter.cl
         super.onCreate(savedInstanceState);
          binding = DataBindingUtil.setContentView(this, R.layout.activity_detail);
 
+         idlingResource = new SimpleIdlingResource();
+
         layoutManager = new LinearLayoutManager(this);
         binding.recyclerView.setLayoutManager(layoutManager);
         setSupportActionBar(binding.toolbar);
         context = getApplicationContext();
 
-        ActionBar actionBar = getSupportActionBar();
+        actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
 
@@ -93,7 +103,6 @@ public class DetailActivity extends AppCompatActivity implements StepsAdapter.cl
                 Intent intent = new Intent(context, IngredientActivity.class);
                 intent.putParcelableArrayListExtra("arrayList", fieldsArrayList);
                 intent.putExtra("index", index);
-                updateWidget();
                 startActivity(intent);
             }
         });
@@ -127,6 +136,7 @@ public class DetailActivity extends AppCompatActivity implements StepsAdapter.cl
                 Log.e(LOG_TAG, String.valueOf(id));
                 adapter.setData(stepsArrayList);
                 binding.recyclerView.setAdapter(adapter);
+                actionBar.setTitle(title);
 
 
                 binding.drawerLayout.closeDrawers();
@@ -135,32 +145,14 @@ public class DetailActivity extends AppCompatActivity implements StepsAdapter.cl
             }
         });
 
-        Intent intent1 = new Intent(this, AppWidget.class);
-        intent1.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-// Use an array and EXTRA_APPWIDGET_IDS instead of AppWidgetManager.EXTRA_APPWIDGET_ID,
-// since it seems the onUpdate() is only fired on that:
-        int[] ids = AppWidgetManager.getInstance(getApplication())
-                .getAppWidgetIds(new ComponentName(getApplication(), AppWidget.class));
-        intent1.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
-        sendBroadcast(intent1);
+
 
 
     }
-    private void updateWidget() {
-        Intent intent1 = new Intent(this, AppWidget.class);
-        intent1.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-// Use an array and EXTRA_APPWIDGET_IDS instead of AppWidgetManager.EXTRA_APPWIDGET_ID,
-// since it seems the onUpdate() is only fired on that:
-        int[] ids = AppWidgetManager.getInstance(getApplication())
-                .getAppWidgetIds(new ComponentName(getApplication(), AppWidget.class));
-        intent1.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
-        sendBroadcast(intent1);
-
-        AppWidgetService.updateWidget(context, fieldsArrayList);
-
-        Log.e(LOG_TAG, "updateWidget");
-
+    public IdlingResource getIdlingResource(){
+        return idlingResource;
     }
+
 
     @Override
     public void onItemClicked(int itemIndex) {
